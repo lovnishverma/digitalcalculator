@@ -68,22 +68,7 @@
             margin-top: 20px;
         }
 
-        .history h5 {
-            margin-bottom: 5px;
-        }
-
-        .history-items {
-            max-height: 100px;
-            overflow-y: auto;
-            padding: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .history-item {
-            margin-bottom: 5px;
-        }
-
-        .theme-options {
+        .theme-select {
             margin-top: 20px;
         }
     </style>
@@ -163,28 +148,27 @@
                 </div>
             </div>
         </div>
-
         <div class="history">
-            <h5>History:</h5>
-            <div class="history-items"></div>
+            <h3>History:</h3>
+            <div id="history-container"></div>
             <button class="btn btn-secondary" onclick="clearHistory()">Clear History</button>
         </div>
-
-        <div class="theme-options">
-            <h5>Theme Options:</h5>
+        <div class="theme-select">
+            <h3>Theme:</h3>
             <select id="theme-select" onchange="changeTheme()">
                 <option value="theme-default">Default</option>
                 <option value="theme-dark">Dark</option>
-                <option value="theme-blue">Blue</option>
+                <option value="theme-colorful">Colorful</option>
             </select>
         </div>
     </div>
 
     <script>
-        var currentTheme = 'theme-default';
+        var screen = document.querySelector('.screen');
+        var historyContainer = document.getElementById('history-container');
+        var history = [];
 
         function appendCharacter(character) {
-            var screen = document.querySelector('.screen');
             if (character === '' && screen.textContent === '0') {
                 return;
             }
@@ -192,53 +176,50 @@
         }
 
         function clearScreen() {
-            var screen = document.querySelector('.screen');
             screen.textContent = '';
         }
 
         function backspace() {
-            var screen = document.querySelector('.screen');
             screen.textContent = screen.textContent.slice(0, -1);
         }
 
         function calculate() {
-            var screen = document.querySelector('.screen');
             var expression = screen.textContent;
-
+            var result;
             try {
-                var result = eval(expression);
+                result = Function('return ' + expression)();
                 if (result === Infinity || result === -Infinity) {
-                    result = 0;
+                    result = 'Error';
                 }
-                screen.textContent = result;
-
-                addToHistory(expression + ' = ' + result);
             } catch (error) {
-                screen.textContent = 'Error';
+                result = 'Error';
+            }
+            screen.textContent = result;
+            history.push(expression + ' = ' + result);
+            History();
+        }
+
+        function History() {
+            historyContainer.innerHTML = '';
+            for (var i = 0; i < history.length; i++) {
+                var item = document.createElement('p');
+                item.textContent = history[i];
+                historyContainer.appendChild(item);
             }
         }
 
-        function addToHistory(item) {
-            var historyItems = document.querySelector('.history-items');
-            var historyItem = document.createElement('div');
-            historyItem.classList.add('history-item');
-            historyItem.textContent = item;
-            historyItems.appendChild(historyItem);
-        }
-
         function clearHistory() {
-            var historyItems = document.querySelector('.history-items');
-            historyItems.innerHTML = '';
+            history = [];
+            historyContainer.innerHTML = '';
         }
 
-       function changeTheme() {
-    var themeSelect = document.getElementById('theme-select');
-    var selectedTheme = themeSelect.value;
+        function changeTheme() {
+            var themeSelect = document.getElementById('theme-select');
+            var selectedTheme = themeSelect.options[themeSelect.selectedIndex].value;
+            document.body.className = selectedTheme;
+        }
 
-    var calculator = document.querySelector('.calculator');
-    calculator.className = 'calculator ' + selectedTheme;
-}
-
+        changeTheme();  // Apply the default theme on page load
     </script>
 </body>
 </html>
