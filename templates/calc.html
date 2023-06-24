@@ -4,12 +4,20 @@
     <title>Calculator</title>
 </head>
 <body>
-  <form action="/calc" method="post">
+  <form action="/calc" method="POST">
     <label for="num1">Enter 1st number:</label>
     <input type="number" id="num1" name="num1" placeholder="Enter 1st no." required>
     <br>
     <label for="num2">Enter 2nd number:</label>
     <input type="number" id="num2" name="num2" placeholder="Enter 2nd no." required>
+    <br>
+    <label for="operator">Select operator:</label>
+    <select id="operator" name="operator" required>
+      <option value="+">+</option>
+      <option value="-">-</option>
+      <option value="*">*</option>
+      <option value="/">/</option>
+    </select>
     <br>
     <input type="reset">
     <br>
