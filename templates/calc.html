@@ -15,6 +15,15 @@
             animation: scaleIn 0.5s ease-in-out;
         }
 
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
         .screen {
             background-color: #fff;
             border: 1px solid #ccc;
@@ -36,6 +45,15 @@
             animation: fadeIn 0.5s ease-in-out;
         }
 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
         .btn-cancel {
             background-color: #ff4f4f;
             color: #fff;
@@ -46,44 +64,118 @@
             color: #fff;
         }
 
-        /* Theme styles */
-        .theme-default {
-            /* Default theme styles */
+        .history {
+            margin-top: 20px;
         }
 
-        .theme-dark {
-            background-color: #333;
-            color: #fff;
+        .history h5 {
+            margin-bottom: 5px;
         }
 
-        .theme-purple {
-            background-color: #7b68ee;
-            color: #fff;
+        .history-items {
+            max-height: 100px;
+            overflow-y: auto;
+            padding: 5px;
+            border: 1px solid #ccc;
         }
 
-        .theme-green {
-            background-color: #90ee90;
+        .history-item {
+            margin-bottom: 5px;
         }
 
-        /* Rest of the styles... */
-
-        /* Rest of the styles... */
+        .theme-options {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <div class="calculator theme-default">
+    <div class="calculator">
         <div class="screen"></div>
         <div class="btn-wrapper">
-            <!-- Calculator buttons... -->
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-cancel" onclick="clearScreen()">C</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="backspace()">←</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('/')">/</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('%')">%</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('-')">-</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('*')">*</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('+')">+</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('//')">//</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('1')">1</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('2')">2</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('3')">3</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('.')">.</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('4')">4</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('5')">5</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('6')">6</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('0')">0</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('7')">7</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('8')">8</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('9')">9</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn-equal" onclick="calculate()">=</button>
+                </div>
+            </div>
         </div>
-        <div class="history"></div>
+
+        <div class="history">
+            <h5>History:</h5>
+            <div class="history-items"></div>
+            <button class="btn btn-secondary" onclick="clearHistory()">Clear History</button>
+        </div>
+
         <div class="theme-options">
-            <label for="theme-select">Select Theme:</label>
+            <h5>Theme Options:</h5>
             <select id="theme-select" onchange="changeTheme()">
                 <option value="theme-default">Default</option>
                 <option value="theme-dark">Dark</option>
-                <option value="theme-purple">Purple</option>
-                <option value="theme-green">Green</option>
+                <option value="theme-blue">Blue</option>
             </select>
         </div>
     </div>
@@ -120,55 +212,33 @@
                 }
                 screen.textContent = result;
 
-                // Display the expression in the history
-                var history = document.querySelector('.history');
-                var historyItem = document.createElement('div');
-                historyItem.textContent = expression + ' = ' + result;
-                history.prepend(historyItem);
-
-                // Clear the screen after calculation
-                clearScreen();
+                addToHistory(expression + ' = ' + result);
             } catch (error) {
                 screen.textContent = 'Error';
             }
         }
 
-        function changeTheme() {
-            var selectElement = document.getElementById('theme-select');
-            var newTheme = selectElement.value;
-
-            // Remove current theme class from the calculator
-            document.querySelector('.calculator').classList.remove(currentTheme);
-
-            // Add new theme class to the calculator
-            document.querySelector('.calculator').classList.add(newTheme);
-
-            currentTheme = newTheme;
+        function addToHistory(item) {
+            var historyItems = document.querySelector('.history-items');
+            var historyItem = document.createElement('div');
+            historyItem.classList.add('history-item');
+            historyItem.textContent = item;
+            historyItems.appendChild(historyItem);
         }
 
-        // Keyboard support
-        document.addEventListener('keydown', function(event) {
-            var key = event.key;
-            var allowedCharacters = '0123456789./*-+%';
-            var operators = ['/', '*', '-', '+', '%'];
+        function clearHistory() {
+            var historyItems = document.querySelector('.history-items');
+            historyItems.innerHTML = '';
+        }
 
-            if (allowedCharacters.includes(key)) {
-                event.preventDefault();
-                appendCharacter(key);
-            } else if (key === 'Enter') {
-                event.preventDefault();
-                calculate();
-            } else if (key === 'Backspace') {
-                event.preventDefault();
-                backspace();
-            } else if (key === 'Escape') {
-                event.preventDefault();
-                clearScreen();
-            } else if (operators.includes(key)) {
-                event.preventDefault();
-                appendCharacter(key);
-            }
-        });
+       function changeTheme() {
+    var themeSelect = document.getElementById('theme-select');
+    var selectedTheme = themeSelect.value;
+
+    var calculator = document.querySelector('.calculator');
+    calculator.className = 'calculator ' + selectedTheme;
+}
+
     </script>
 </body>
 </html>
