@@ -1,23 +1,23 @@
 from flask import Flask, render_template, request
 
-
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     return render_template('index.html')
-  
+
 @app.route('/calc', methods=['POST'])
 def calc():
-  if request.method == 'POST':
-    num1 = int(request.form['num1'])
-    num2 = int(request.form['num2'])
-    #add= int(request.form['add'])
-    # sub= int(request.form['sub'])
-    # mul= int(request.form['mul'])
-    # div= int(request.form['div'])
-    result = ([[num1 + num2]])
-    return render_template('calc.html', result)
-    
+    if request.method == 'POST':
+        try:
+            num1 = int(request.form['num1'])
+            num2 = int(request.form['num2'])
+            result = num1 + num2
+            return render_template('calc.html', result=result)
+        except (KeyError, ValueError):
+            error_message = "Invalid input. Please enter valid numbers."
+            return render_template('calc.html', error=error_message)
+    return render_template('calc.html')
+
 if __name__ =='__main__':
-  app.run(debug=True)
+    app.run(debug=True)
