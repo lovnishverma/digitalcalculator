@@ -53,30 +53,34 @@
                 opacity: 1;
             }
         }
+
+        .btn-cancel {
+            background-color: #ff4f4f;
+            color: #fff;
+        }
+
+        .btn-equal {
+            background-color: #5eba7d;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
     <div class="calculator">
-        <div class="screen">
-            {% if expression %}
-            {{ expression }}
-            {% else %}
-            0
-            {% endif %}
-        </div>
+        <div class="screen"></div>
         <div class="btn-wrapper">
             <div class="row">
                 <div class="col-3">
-                    <button class="btn btn-secondary" onclick="clearScreen()">C</button>
+                    <button class="btn btn-cancel" onclick="clearScreen()">C</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="backspace()">←</button>
                 </div>
                 <div class="col-3">
                     <button class="btn btn-secondary" onclick="appendCharacter('/')">/</button>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-secondary" onclick="appendCharacter('*')">*</button>
-                </div>
-                <div class="col-3">
-                    <button class="btn btn-secondary" onclick="appendCharacter('+')">+</button>
+                    <button class="btn btn-secondary" onclick="appendCharacter('%')">%</button>
                 </div>
             </div>
             <div class="row">
@@ -84,10 +88,10 @@
                     <button class="btn btn-secondary" onclick="appendCharacter('-')">-</button>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-secondary" onclick="appendCharacter('%')">%</button>
+                    <button class="btn btn-secondary" onclick="appendCharacter('*')">*</button>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-secondary" onclick="appendCharacter('**')">^</button>
+                    <button class="btn btn-secondary" onclick="appendCharacter('+')">+</button>
                 </div>
                 <div class="col-3">
                     <button class="btn btn-secondary" onclick="appendCharacter('//')">//</button>
@@ -95,13 +99,13 @@
             </div>
             <div class="row">
                 <div class="col-3">
-                    <button class="btn btn-primary" onclick="appendCharacter('7')">7</button>
+                    <button class="btn btn-primary" onclick="appendCharacter('1')">1</button>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-primary" onclick="appendCharacter('8')">8</button>
+                    <button class="btn btn-primary" onclick="appendCharacter('2')">2</button>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-primary" onclick="appendCharacter('9')">9</button>
+                    <button class="btn btn-primary" onclick="appendCharacter('3')">3</button>
                 </div>
                 <div class="col-3">
                     <button class="btn btn-secondary" onclick="appendCharacter('.')">.</button>
@@ -123,16 +127,16 @@
             </div>
             <div class="row">
                 <div class="col-3">
-                    <button class="btn btn-primary" onclick="appendCharacter('1')">1</button>
+                    <button class="btn btn-primary" onclick="appendCharacter('7')">7</button>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-primary" onclick="appendCharacter('2')">2</button>
+                    <button class="btn btn-primary" onclick="appendCharacter('8')">8</button>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-primary" onclick="appendCharacter('3')">3</button>
+                    <button class="btn btn-primary" onclick="appendCharacter('9')">9</button>
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-primary" onclick="calculate()">=</button>
+                    <button class="btn-equal" onclick="calculate()">=</button>
                 </div>
             </div>
         </div>
@@ -141,6 +145,9 @@
     <script>
         function appendCharacter(character) {
             var screen = document.querySelector('.screen');
+            if (character === '' && screen.textContent === '0') {
+                return;
+            }
             screen.textContent += character;
         }
 
@@ -149,12 +156,20 @@
             screen.textContent = '';
         }
 
+        function backspace() {
+            var screen = document.querySelector('.screen');
+            screen.textContent = screen.textContent.slice(0, -1);
+        }
+
         function calculate() {
             var screen = document.querySelector('.screen');
             var expression = screen.textContent;
 
             try {
                 var result = eval(expression);
+                if (result === Infinity || result === -Infinity) {
+                    result = 0;
+                }
                 screen.textContent = result;
             } catch (error) {
                 screen.textContent = 'Error';
