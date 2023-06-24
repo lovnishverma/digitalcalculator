@@ -12,19 +12,19 @@ def index():
 @app.route('/calc')
 def calculator():
   return render_template('calc.html')
-#     sign=str(input("Enter sign: "))
-#     number2=eval(input("Enter another number: "))
-#     if sign=='+':
-#         number=number+number2
-#         print(number)
-#     elif sign=='-':
-#         number=number-number2
-#         print(number)
-#     elif sign=='*':
-#         number=number*number2
-#         print(number)
-#     elif sign=='/':
-#         number=number/number2
-#         print(number)
+    sign=str(input("Enter sign: "))
+    number2=eval(input("Enter another number: "))
+    if sign=='+':
+        number=number+number2
+        (number)
+    elif sign=='-':
+        number=number-number2
+        (number)
+    elif sign=='*':
+        number=number*number2
+        print(number)
+    elif sign=='/':
+        number=number/number2
+        print(number)
 if __name__ =='__main__':
   app.run(debug=True)
