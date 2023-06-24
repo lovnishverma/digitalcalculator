@@ -5,7 +5,7 @@
   <form action="/calc" method="POST">
     <legend>Our basic Calculator:</legend>
     <input type="number" id="num1" placeholder="Enter 1st no.">
-   <fieldset>
+<!--    <fieldset>
     
 
     <div>
@@ -27,13 +27,14 @@
       <input type="radio" id="div" name="Div" value="/">
       <label for="Div">Division</label>
     </div>
-</fieldset>
+</fieldset> -->
     <input type="number" id="num2" placeholder="Enter 2nd no.">
     <br>
     <input type="reset">
     <br>
     <input type="submit">
-    {%%}
+    {% if result %}
+    {{ result }}
   </form>
   </body>
 </html>
