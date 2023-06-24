@@ -12,19 +12,14 @@ def index():
 @app.route('/calc')
 def calculator():
   return render_template('calc.html')
-    sign=str(input("Enter sign: "))
-    number2=eval(input("Enter another number: "))
-    if sign=='+':
-        number=number+number2
-        (number)
-    elif sign=='-':
-        number=number-number2
-        (number)
-    elif sign=='*':
-        number=number*number2
-        print(number)
-    elif sign=='/':
-        number=number/number2
-        print(number)
+num1= int(request.form['num1'])
+num2= int(request.form['num2'])
+add= int(request.form['add'])
+sub= int(request.form['sub'])
+mul= int(request.form['mul'])
+div= int(request.form['div'])
+result = num1
+
+    
 if __name__ =='__main__':
   app.run(debug=True)
