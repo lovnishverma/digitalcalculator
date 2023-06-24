@@ -2,11 +2,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/calculate', methods=['GET','POST'])
+@app.route('/', methods=['GET','POST'])
 def calculate():
     try:
         expression = request.form['expression']

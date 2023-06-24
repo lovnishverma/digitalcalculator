@@ -12,7 +12,18 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             padding: 10px;
+            animation: scaleIn 0.5s ease-in-out;
         }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
         .screen {
             background-color: #fff;
             border: 1px solid #ccc;
@@ -21,13 +32,26 @@
             font-size: 24px;
             text-align: right;
         }
+
         .btn-wrapper {
             margin-top: 10px;
         }
+
         .btn-wrapper button {
             width: 75px;
             height: 50px;
             font-size: 20px;
+            margin: 5px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
     </style>
 </head>
@@ -41,31 +65,76 @@
             {% endif %}
         </div>
         <div class="btn-wrapper">
-            <button class="btn btn-secondary" onclick="clearScreen()">C</button>
-            <button class="btn btn-secondary" onclick="appendCharacter('/')">/</button>
-            <button class="btn btn-secondary" onclick="appendCharacter('*')">*</button>
-            <button class="btn btn-secondary" onclick="appendCharacter('+')">+</button>
-            <button class="btn btn-secondary" onclick="appendCharacter('-')">-</button>
-        </div>
-        <div class="btn-wrapper">
-            <button class="btn btn-primary" onclick="appendCharacter('7')">7</button>
-            <button class="btn btn-primary" onclick="appendCharacter('8')">8</button>
-            <button class="btn btn-primary" onclick="appendCharacter('9')">9</button>
-        </div>
-        <div class="btn-wrapper">
-            <button class="btn btn-primary" onclick="appendCharacter('4')">4</button>
-            <button class="btn btn-primary" onclick="appendCharacter('5')">5</button>
-            <button class="btn btn-primary" onclick="appendCharacter('6')">6</button>
-        </div>
-        <div class="btn-wrapper">
-            <button class="btn btn-primary" onclick="appendCharacter('1')">1</button>
-            <button class="btn btn-primary" onclick="appendCharacter('2')">2</button>
-            <button class="btn btn-primary" onclick="appendCharacter('3')">3</button>
-        </div>
-        <div class="btn-wrapper">
-            <button class="btn btn-primary" onclick="appendCharacter('0')">0</button>
-            <button class="btn btn-secondary" onclick="appendCharacter('.')">.</button>
-            <button class="btn btn-primary" onclick="calculate()">=</button>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="clearScreen()">C</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('/')">/</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('*')">*</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('+')">+</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('-')">-</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('%')">%</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('**')">^</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('//')">//</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('7')">7</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('8')">8</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('9')">9</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-secondary" onclick="appendCharacter('.')">.</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('4')">4</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('5')">5</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('6')">6</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('0')">0</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('1')">1</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('2')">2</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="appendCharacter('3')">3</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" onclick="calculate()">=</button>
+                </div>
+            </div>
         </div>
     </div>
 
