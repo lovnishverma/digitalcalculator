@@ -63,6 +63,39 @@
             background-color: #5eba7d;
             color: #fff;
         }
+
+        .history {
+            margin-top: 20px;
+        }
+
+        .history div {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .history button {
+            width: 100%;
+        }
+
+        /* Theme Classes */
+        .theme-default {
+            /* Default theme styles */
+        }
+
+        .theme-dark {
+            background-color: #444;
+            color: #fff;
+        }
+
+        .theme-purple {
+            background-color: #8e44ad;
+            color: #fff;
+        }
+
+        .theme-blue {
+            background-color: #3498db;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -140,41 +173,121 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        function appendCharacter(character) {
-            var screen = document.querySelector('.screen');
-            if (character === '' && screen.textContent === '0') {
-                return;
-            }
-            screen.textContent += character;
-        }
+        <div class="history">
+            <div id="history-container"></div>
+            <button class="btn btn-danger" onclick="clearHistory()">Clear History</button>
+        </div>
 
-        function clearScreen() {
-            var screen = document.querySelector('.screen');
-            screen.textContent = '';
-        }
+        <div class="theme-options">
+            <label for="theme-select">Select Theme: </label>
+            <select id="theme-select" onchange="changeTheme()">
+                <option value="default">Default</option>
+                <option value="dark">Dark</option>
+                <option value="purple">Purple</option>
+                <option value="blue">Blue</option>
+            </select>
+        </div>
 
-        function backspace() {
-            var screen = document.querySelector('.screen');
-            screen.textContent = screen.textContent.slice(0, -1);
-        }
+        <script>
+            var historyContainer = document.getElementById('history-container');
+            var currentTheme = 'default';
 
-        function calculate() {
-            var screen = document.querySelector('.screen');
-            var expression = screen.textContent;
-
-            try {
-                var result = eval(expression);
-                if (result === Infinity || result === -Infinity) {
-                    result = 0;
+            function appendCharacter(character) {
+                var screen = document.querySelector('.screen');
+                if (character === '' && screen.textContent === '0') {
+                    return;
                 }
-                screen.textContent = result;
-            } catch (error) {
-                screen.textContent = 'Error';
+                screen.textContent += character;
             }
-        }
-    </script>
+
+            function clearScreen() {
+                var screen = document.querySelector('.screen');
+                screen.textContent = '';
+            }
+
+            function backspace() {
+                var screen = document.querySelector('.screen');
+                screen.textContent = screen.textContent.slice(0, -1);
+            }
+
+            function calculate() {
+                var screen = document.querySelector('.screen');
+                var expression = screen.textContent;
+
+                try {
+                    var result = eval(expression);
+                    if (result === Infinity || result === -Infinity) {
+                        result = 0;
+                    }
+                    screen.textContent = result;
+                    addToHistory(expression + ' = ' + result);
+                } catch (error) {
+                    screen.textContent = 'Error';
+                }
+            }
+
+            function addToHistory(expression) {
+                var historyItem = document.createElement('div');
+                historyItem.textContent = expression;
+                historyContainer.appendChild(historyItem);
+            }
+
+            function clearHistory() {
+                historyContainer.innerHTML = '';
+            }
+
+            function changeTheme() {
+                var themeSelect = document.getElementById('theme-select');
+                var newTheme = themeSelect.value;
+
+                if (newTheme === currentTheme) {
+                    return;
+                }
+
+                var calculator = document.querySelector('.calculator');
+                calculator.classList.remove('theme-' + currentTheme);
+                calculator.classList.add('theme-' + newTheme);
+
+                currentTheme = newTheme;
+            }
+
+            document.addEventListener('keydown', function(event) {
+                var key = event.key;
+
+                switch (key) {
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    case '+':
+                    case '-':
+                    case '*':
+                    case '/':
+                    case '%':
+                    case '.':
+                        appendCharacter(key);
+                        break;
+                    case 'Enter':
+                        calculate();
+                        break;
+                    case 'Backspace':
+                        backspace();
+                        break;
+                    case 'Escape':
+                        clearScreen();
+                        break;
+                    default:
+                        break;
+                }
+            });
+        </script>
+    </div>
 </body>
 </html>
