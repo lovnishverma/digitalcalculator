@@ -2,32 +2,95 @@
 <html>
 <head>
     <title>Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .calculator {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        .screen {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            height: 60px;
+            padding: 5px;
+            font-size: 24px;
+            text-align: right;
+        }
+        .btn-wrapper {
+            margin-top: 10px;
+        }
+        .btn-wrapper button {
+            width: 75px;
+            height: 50px;
+            font-size: 20px;
+        }
+    </style>
 </head>
 <body>
-  <form action="/calc" method="POST">
-    <label for="num1">Enter 1st number:</label>
-    <input type="number" id="num1" name="num1" placeholder="Enter 1st no." required>
-    <br>
-    <label for="num2">Enter 2nd number:</label>
-    <input type="number" id="num2" name="num2" placeholder="Enter 2nd no." required>
-    <br>
-    <label for="operator">Select operator:</label>
-    <select id="operator" name="operator" required>
-      <option value="+">+</option>
-      <option value="-">-</option>
-      <option value="*">*</option>
-      <option value="/">/</option>
-    </select>
-    <br>
-    <input type="reset">
-    <br>
-    <input type="submit">
-    {% if result %}
-    <p>Result: {{ result }}</p>
-    {% endif %}
-    {% if error %}
-    <p class="error">{{ error }}</p>
-    {% endif %}
-  </form>
+    <div class="calculator">
+        <div class="screen">
+            {% if expression %}
+            {{ expression }}
+            {% else %}
+            0
+            {% endif %}
+        </div>
+        <div class="btn-wrapper">
+            <button class="btn btn-secondary" onclick="clearScreen()">C</button>
+            <button class="btn btn-secondary" onclick="appendCharacter('/')">/</button>
+            <button class="btn btn-secondary" onclick="appendCharacter('*')">*</button>
+            <button class="btn btn-secondary" onclick="appendCharacter('+')">+</button>
+            <button class="btn btn-secondary" onclick="appendCharacter('-')">-</button>
+        </div>
+        <div class="btn-wrapper">
+            <button class="btn btn-primary" onclick="appendCharacter('7')">7</button>
+            <button class="btn btn-primary" onclick="appendCharacter('8')">8</button>
+            <button class="btn btn-primary" onclick="appendCharacter('9')">9</button>
+        </div>
+        <div class="btn-wrapper">
+            <button class="btn btn-primary" onclick="appendCharacter('4')">4</button>
+            <button class="btn btn-primary" onclick="appendCharacter('5')">5</button>
+            <button class="btn btn-primary" onclick="appendCharacter('6')">6</button>
+        </div>
+        <div class="btn-wrapper">
+            <button class="btn btn-primary" onclick="appendCharacter('1')">1</button>
+            <button class="btn btn-primary" onclick="appendCharacter('2')">2</button>
+            <button class="btn btn-primary" onclick="appendCharacter('3')">3</button>
+        </div>
+        <div class="btn-wrapper">
+            <button class="btn btn-primary" onclick="appendCharacter('0')">0</button>
+            <button class="btn btn-secondary" onclick="appendCharacter('.')">.</button>
+            <button class="btn btn-primary" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        function appendCharacter(character) {
+            var screen = document.querySelector('.screen');
+            screen.textContent += character;
+        }
+
+        function clearScreen() {
+            var screen = document.querySelector('.screen');
+            screen.textContent = '';
+        }
+
+        function calculate() {
+            var screen = document.querySelector('.screen');
+            var expression = screen.textContent;
+
+            try {
+                var result = eval(expression);
+                screen.textContent = result;
+            } catch (error) {
+                screen.textContent = 'Error';
+            }
+        }
+    </script>
 </body>
 </html>
