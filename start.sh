@@ -1,1 +1,0 @@
-python calc.py
